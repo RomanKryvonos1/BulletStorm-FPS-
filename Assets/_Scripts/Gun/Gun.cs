@@ -16,7 +16,7 @@ public class Gun : MonoBehaviour
     private bool isReloading = false;
 
     public Camera fpsCam;
-    public GameObject impactEffect;
+    //public GameObject impactEffect;
     public AudioSource shotSound;
     public AudioSource reloadSound;
 
@@ -55,7 +55,6 @@ public class Gun : MonoBehaviour
         }
         else
         {
-
             animator.SetBool("Shooting", false);
         }
     }
@@ -97,8 +96,8 @@ public class Gun : MonoBehaviour
                 hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
 
-            GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactGO, impactTime);
+            //GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+           // Destroy(impactGO, impactTime);
         }
     }
 }
