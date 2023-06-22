@@ -5,20 +5,18 @@ using UnityEngine;
 public class Scope : MonoBehaviour
 {
     public Animator animator;
-    public GameObject scopeOverloy;
     public Camera scopeCamera;
 
     public float scopedFOV = 15f;
     private float normalFOV;
 
-    private bool isScoped = false;
+    private bool isScoped = true;
 
     void Update()
     {
         if (Input.GetButtonDown("Fire2"))
         {
-            isScoped = !isScoped;
-            animator.SetBool("Scoped", isScoped);
+            animator.SetBool("Scoped", true);
 
             if(isScoped)
                 StartCoroutine(OnScoped());
@@ -26,7 +24,7 @@ public class Scope : MonoBehaviour
                 OnUnScoped();
         }else
         {
-            animator.SetBool("Scoped", isScoped);
+            animator.SetBool("Scoped", false);
         }
 
     }
