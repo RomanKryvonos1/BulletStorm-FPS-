@@ -605,7 +605,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: ' 30/120'
+  m_Text: Ammo
 --- !u!222 &192102146
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -823,7 +823,7 @@ RectTransform:
   - {fileID: 1532737732}
   - {fileID: 192102144}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1030,12 +1030,8 @@ MonoBehaviour:
   fireRate: 2
   impactForce: 60
   impactTime: 0.2
-  reloadTime: 3
-  maxAmmo: 7
-  ammoCapacity: 10
-  currentAmmo: 7
   fpsCam: {fileID: 1225081057}
-  ammoText: {fileID: 0}
+  ammoText: {fileID: 192102145}
   shotSound: {fileID: 1049644624}
   reloadSound: {fileID: 1663072477}
   animator: {fileID: 500077875}
@@ -3970,9 +3966,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4776676469492754}
   - {fileID: 543450653430637233}
   - {fileID: 543450653510105594}
-  - {fileID: 4776676469492754}
   m_Father: {fileID: 1152063184}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4080,14 +4076,10 @@ MonoBehaviour:
   fireRate: 5
   impactForce: 100
   impactTime: 0.2
-  reloadTime: 5
-  maxAmmo: 30
-  ammoCapacity: 10
-  currentAmmo: 30
   fpsCam: {fileID: 1225081057}
-  ammoText: {fileID: 0}
+  ammoText: {fileID: 192102145}
   shotSound: {fileID: 6959867}
-  reloadSound: {fileID: 0}
+  reloadSound: {fileID: 6959867}
   animator: {fileID: 931661886}
 --- !u!1 &960542216
 GameObject:
@@ -5652,7 +5644,7 @@ Transform:
   - {fileID: 1273014806}
   - {fileID: 1353367597}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1570625813
 GameObject:
@@ -6798,7 +6790,7 @@ Transform:
   - {fileID: 1225081054}
   - {fileID: 82547576}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &2055255481
 MonoBehaviour:
@@ -6860,12 +6852,8 @@ MonoBehaviour:
   fireRate: 0.5
   impactForce: 200
   impactTime: 0.1
-  reloadTime: 5
-  maxAmmo: 7
-  ammoCapacity: 10
-  currentAmmo: 7
   fpsCam: {fileID: 1225081057}
-  ammoText: {fileID: 0}
+  ammoText: {fileID: 192102145}
   shotSound: {fileID: 1918313327}
   reloadSound: {fileID: 1474375397}
   animator: {fileID: 2056916806}
@@ -6937,13 +6925,14 @@ GameObject:
   - component: {fileID: 23029500594079036}
   - component: {fileID: 500077875}
   - component: {fileID: 500077872}
+  - component: {fileID: 33440980035497219}
   m_Layer: 7
   m_Name: Makarov Silenced
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1566327884994398
 GameObject:
   m_ObjectHideFlags: 0
@@ -7025,7 +7014,7 @@ Transform:
   - {fileID: 1049644623}
   - {fileID: 1663072476}
   m_Father: {fileID: 894530209}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!23 &23029500594079036
 MeshRenderer:
@@ -7211,6 +7200,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1300433836777926}
   m_Mesh: {fileID: 4300000, guid: 4021ae645c4844a41ae19c303a8ad695, type: 3}
+--- !u!114 &33440980035497219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1300433836777926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed3a0fad2b3ae4bc18e7f5b133d200f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAmmo: 14
+  ammoCapacity: 7
+  currentAmmo: 0
+  reloadSpeed: 3
+  ammoText: {fileID: 192102145}
+  needReload: 0
 --- !u!33 &33563273987778894
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7336,7 +7343,7 @@ Transform:
   - {fileID: 1975709130}
   - {fileID: 1570625814}
   m_Father: {fileID: 894530209}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &543450653510105594
 Transform:
@@ -7375,7 +7382,7 @@ Transform:
   - {fileID: 6959866}
   - {fileID: 971125066}
   m_Father: {fileID: 894530209}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &598457777021530504
 MeshRenderer:
@@ -7537,6 +7544,7 @@ GameObject:
   - component: {fileID: 931661886}
   - component: {fileID: 931661887}
   - component: {fileID: 931661888}
+  - component: {fileID: 919132149252891457}
   m_Layer: 7
   m_Name: m4
   m_TagString: Untagged
@@ -7544,6 +7552,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &919132149252891457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149252891456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed3a0fad2b3ae4bc18e7f5b133d200f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAmmo: 120
+  ammoCapacity: 30
+  currentAmmo: 0
+  reloadSpeed: 4.883
+  ammoText: {fileID: 192102145}
+  needReload: 0
 --- !u!1 &919132149425092619
 GameObject:
   m_ObjectHideFlags: 0
@@ -7556,13 +7582,14 @@ GameObject:
   - component: {fileID: 2056916806}
   - component: {fileID: 2056916807}
   - component: {fileID: 919132149425092620}
+  - component: {fileID: 919132149425092621}
   m_Layer: 7
   m_Name: sniper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &919132149425092620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7578,6 +7605,24 @@ MonoBehaviour:
   animator: {fileID: 2056916806}
   scopeCamera: {fileID: 83014065}
   scopedFOV: 15
+--- !u!114 &919132149425092621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149425092619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed3a0fad2b3ae4bc18e7f5b133d200f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAmmo: 25
+  ammoCapacity: 5
+  currentAmmo: 0
+  reloadSpeed: 1
+  ammoText: {fileID: 192102145}
+  needReload: 0
 --- !u!33 &1042673405403394351
 MeshFilter:
   m_ObjectHideFlags: 0
