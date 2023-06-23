@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Gun : MonoBehaviour
 {
@@ -10,12 +11,8 @@ public class Gun : MonoBehaviour
     public float impactForce = 60f;
     public float impactTime = 1f;
 
-    public int maxAmmo = 10;
-    private int currentAmmo;
-    public float reloadTime = 1f;
-    private bool isReloading = false;
-
     public Camera fpsCam;
+    public Text ammoText;
     //public GameObject impactEffect;
     public AudioSource shotSound;
     public AudioSource reloadSound;
@@ -23,30 +20,17 @@ public class Gun : MonoBehaviour
     private float nextTimeToFire = 0f;
 
     public Animator animator;
+    Reloading reloading;
 
     void Start()
     {
-        currentAmmo = maxAmmo;
+        reloading = GetComponent<Reloading>();
     }
 
-    void OnEnable()
-    {
-        isReloading = false;
-        animator.SetBool("Reloading", false);
-    }
 
     void Update()
     {
-        if (isReloading)
-            return;
-
-        if (currentAmmo <= 0)
-        {
-            StartCoroutine(Reload());
-            return;
-        }
-
-       if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire)
+       if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire && !reloading.needReload)
         {
             shotSound.Play();
             animator.SetBool("Shooting", true);
@@ -59,26 +43,9 @@ public class Gun : MonoBehaviour
         }
     }
 
-    IEnumerator Reload()
-    {
-        isReloading = true;
-        reloadSound.Play();
-        Debug.Log("Reloading...");
-        animator.SetBool("Reloading", true);
-
-        yield return new WaitForSeconds(reloadTime - .25f);
-        animator.SetBool("Reloading", false);
-        yield return new WaitForSeconds(.25f);
-
-        currentAmmo = maxAmmo;
-        isReloading = false; 
-    }
-
     void Shoot()
     {
-
-        currentAmmo--;
-
+        reloading.DecreaseAmmo();
 
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit , range))
