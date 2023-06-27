@@ -20,7 +20,8 @@ public class ScopedRifle : MonoBehaviour
         else
         {
             animator.SetBool("Scoped", isScoped);
+
         }
 
-}
+    }
 }
