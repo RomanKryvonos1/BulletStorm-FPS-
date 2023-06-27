@@ -5,6 +5,7 @@ using Photon.Pun;
 using TMPro;
 using WebSocketSharp;
 using Photon.Realtime;
+using System.Linq;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -15,6 +16,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] TMP_Text errorText;
     [SerializeField] Transform roomListContent;
     [SerializeField] GameObject roomListItemPrefab;
+    [SerializeField] Transform playerListContent;
+    [SerializeField] GameObject PlayerListItemPrefab;
 
 
     void Awake()
@@ -36,8 +39,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
-        Menumanager.Instance.Openmenu("TitleScreen");
         Debug.Log("Joined lobby");
+        Menumanager.Instance.Openmenu("TitleScreen");
+        PhotonNetwork.NickName = "Player" + Random.Range(1, 2).ToString("0");
     }
 
     public void Createroom()
@@ -52,8 +56,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        Menumanager.Instance.Openmenu("room");
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
+        Menumanager.Instance.Openmenu("room");
+
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -72,10 +77,18 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.JoinRoom(info.Name);
         Menumanager.Instance.Openmenu("LoadingScreen");
+        Player[] players = PhotonNetwork.PlayerList;
+
+
+        for (int i = 0; i < players.Count(); i++)
+        {
+            Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
+        }
     }
 
     public override void OnLeftRoom()
     {
+        Debug.Log("Lefttheroom");
         Menumanager.Instance.Openmenu("TitleScreen");
     }
 
@@ -90,6 +103,16 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(roomList[i]);
         }
+    }
+
+     public void Exit()
+    {
+        Application.Quit();
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
     }
 
 }
