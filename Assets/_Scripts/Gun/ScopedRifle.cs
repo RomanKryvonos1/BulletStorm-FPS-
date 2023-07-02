@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class ScopedRifle : MonoBehaviour
+public class ScopedRifle : MonoBehaviourPunCallbacks
 {
 
     public Animator animator;
@@ -12,15 +13,18 @@ public class ScopedRifle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire2"))
+        if (photonView.IsMine)
         {
-            isScoped = !isScoped;
-            animator.SetBool("Scoped", isScoped);
-        }
-        else
-        {
-            animator.SetBool("Scoped", isScoped);
+            if (Input.GetButtonDown("Fire2"))
+            {
+                isScoped = !isScoped;
+                animator.SetBool("Scoped", isScoped);
+            }
+            else
+            {
+                animator.SetBool("Scoped", isScoped);
 
+            }
         }
 
     }
