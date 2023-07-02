@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Scope : MonoBehaviour
+using Photon.Pun;
+public class Scope : MonoBehaviourPunCallbacks
 {
     public Animator animator;
     public Camera scopeCamera;
@@ -14,30 +14,38 @@ public class Scope : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire2"))
+        if (photonView.IsMine)
         {
-            animator.SetBool("Scoped", true);
-            isScoped = !isScoped;
+            if (Input.GetButtonDown("Fire2"))
+            {
+                animator.SetBool("Scoped", true);
+                isScoped = !isScoped;
 
-            if(isScoped)
-                StartCoroutine(OnScoped());
-            else
-                OnUnScoped();
+                if (isScoped)
+                    StartCoroutine(OnScoped());
+                else
+                    OnUnScoped();
+            }
         }
 
     }
 
     void OnUnScoped()
     {
-        animator.SetBool("Scoped", isScoped);
-        normalFOV = 60;
+        if (photonView.IsMine)
+        {
+            animator.SetBool("Scoped", isScoped);
+            normalFOV = 60;
+        }
     }
 
-        IEnumerator OnScoped()
+    IEnumerator OnScoped()
     {
-        yield return new WaitForSeconds(0.15f);
-        normalFOV = scopeCamera.fieldOfView;
-        scopeCamera.fieldOfView = scopedFOV;
+        if (photonView.IsMine)
+        {
+            yield return new WaitForSeconds(0.15f);
+            normalFOV = scopeCamera.fieldOfView;
+            scopeCamera.fieldOfView = scopedFOV;
+        }
     }
-
 }

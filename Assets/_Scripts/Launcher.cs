@@ -18,6 +18,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] GameObject roomListItemPrefab;
     [SerializeField] Transform playerListContent;
     [SerializeField] GameObject PlayerListItemPrefab;
+    [SerializeField] GameObject startGameButton;
 
 
     void Awake()
@@ -35,13 +36,14 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         Debug.Log("Connected to master");
         PhotonNetwork.JoinLobby();
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     public override void OnJoinedLobby()
     {
         Debug.Log("Joined lobby");
         Menumanager.Instance.Openmenu("TitleScreen");
-        PhotonNetwork.NickName = "Player" + Random.Range(1, 2).ToString("0");
+        PhotonNetwork.NickName = "Player " + Random.Range(1, 10).ToString("0");
     }
 
     public void Createroom()
@@ -54,11 +56,35 @@ public class Launcher : MonoBehaviourPunCallbacks
         Menumanager.Instance.Openmenu("LoadingScreen");
     }
 
+    public void StartTheGame()
+    {
+        PhotonNetwork.LoadLevel(1);
+    }
+
     public override void OnJoinedRoom()
     {
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
         Menumanager.Instance.Openmenu("room");
 
+        Player[] players = PhotonNetwork.PlayerList;
+
+        foreach(Transform child in playerListContent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        for (int i = 0; i < players.Count(); i++)
+        {
+            Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
+        }
+
+        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -77,13 +103,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.JoinRoom(info.Name);
         Menumanager.Instance.Openmenu("LoadingScreen");
-        Player[] players = PhotonNetwork.PlayerList;
-
-
-        for (int i = 0; i < players.Count(); i++)
-        {
-            Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
-        }
     }
 
     public override void OnLeftRoom()
@@ -101,6 +120,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         for (int i = 0; i < roomList.Count; i++)
         {
+            if (roomList[i].RemovedFromList)
+                continue;
             Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(roomList[i]);
         }
     }

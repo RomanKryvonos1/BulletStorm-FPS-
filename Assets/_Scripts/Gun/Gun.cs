@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class Gun : MonoBehaviour
+public class Gun : MonoBehaviourPunCallbacks
 {
 
     public float damage = 25f;
@@ -30,41 +31,47 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-       if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire && !reloading.needReload)
+        if (photonView.IsMine)
         {
-            shotSound.Play();
-            animator.SetBool("Shooting", true);
-            nextTimeToFire = Time.time + 1f/fireRate;
-            Shoot();
-        }
-        else
-        {
-            animator.SetBool("Shooting", false);
+            if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire && !reloading.needReload)
+            {
+                shotSound.Play();
+                animator.SetBool("Shooting", true);
+                nextTimeToFire = Time.time + 1f / fireRate;
+                Shoot();
+            }
+            else
+            {
+                animator.SetBool("Shooting", false);
+            }
         }
     }
 
     void Shoot()
     {
-        reloading.DecreaseAmmo();
-
-        RaycastHit hit;
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit , range))
+        if (photonView.IsMine)
         {
-            Debug.Log(hit.transform.name);
+            reloading.DecreaseAmmo();
 
-            Target target = hit.transform.GetComponent<Target>();
-            if (target != null)
+            RaycastHit hit;
+            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
             {
-                target.TakeDamage(damage);
-            }
+                Debug.Log(hit.transform.name);
 
-            if (hit.rigidbody != null)
-            {
-                hit.rigidbody.AddForce(-hit.normal * impactForce);
-            }
+                Target target = hit.transform.GetComponent<Target>();
+                if (target != null)
+                {
+                    target.TakeDamage(damage);
+                }
 
-            //GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-           // Destroy(impactGO, impactTime);
+                if (hit.rigidbody != null)
+                {
+                    hit.rigidbody.AddForce(-hit.normal * impactForce);
+                }
+
+                //GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                // Destroy(impactGO, impactTime);
+            }
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class Reloading : MonoBehaviour
+public class Reloading : MonoBehaviourPunCallbacks
 {
 
 	public int maxAmmo = 50;
@@ -32,43 +33,53 @@ public class Reloading : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (currentAmmo <= 0)
-			needReload = true;
-
-		if (currentMaxAmmo > 0 && currentAmmo < ammoCapacity)
+		if (photonView.IsMine)
 		{
-			if (Input.GetKeyDown(KeyCode.R))
-				StartCoroutine(Reload());
+			if (currentAmmo <= 0)
+				needReload = true;
+
+			if (currentMaxAmmo > 0 && currentAmmo < ammoCapacity)
+			{
+				if (Input.GetKeyDown(KeyCode.R))
+					StartCoroutine(Reload());
+			}
+
+			ammoText.text = currentAmmo + "/" + currentMaxAmmo;
 		}
-
-		ammoText.text = currentAmmo + "/" + currentMaxAmmo;
 	}
-
 	IEnumerator Reload()
 	{
-		Debug.Log("Reloading ...");
-		anim.SetBool("Reloading", true);
-		yield return new WaitForSeconds(reloadSpeed);
-		needReload = false;
-
-		if ((ammoCapacity - currentAmmo) <= currentMaxAmmo)
+		if (photonView.IsMine)
 		{
-			currentMaxAmmo -= (ammoCapacity - currentAmmo);
-			currentAmmo += (ammoCapacity - currentAmmo);
-		}
-		else
-		{
-			currentAmmo += currentMaxAmmo;
-			currentMaxAmmo = 0;
-		}
+			Debug.Log("Reloading ...");
+			anim.SetBool("Reloading", true);
+			yield return new WaitForSeconds(reloadSpeed);
+			needReload = false;
 
-		anim.SetBool("Reloading", false);
+			if ((ammoCapacity - currentAmmo) <= currentMaxAmmo)
+			{
+				currentMaxAmmo -= (ammoCapacity - currentAmmo);
+				currentAmmo += (ammoCapacity - currentAmmo);
+			}
+			else
+			{
+				currentAmmo += currentMaxAmmo;
+				currentMaxAmmo = 0;
+			}
 
+			anim.SetBool("Reloading", false);
+		}
 	}
 
 	public void DecreaseAmmo()
 	{
-		currentAmmo--;
+		if (photonView.IsMine)
+		{
+			if (photonView.IsMine)
+			{
+				currentAmmo--;
+			}
+		}
 	}
 }
 
